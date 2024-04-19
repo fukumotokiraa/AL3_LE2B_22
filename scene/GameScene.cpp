@@ -9,8 +9,8 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	//delete sprite_;
-	//delete model_;
+	delete sprite_;
+	delete model_;
 	//delete debugCamera_; 
 }
 
@@ -19,19 +19,19 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	/*SpriteMario_ = TextureManager::Load("mario.jpg");
-	sprite_ = Sprite::Create(SpriteMario_, {100, 50});
-	ModelMario_ = TextureManager::Load("mario.jpg");
+	SpriteUvChecker_ = TextureManager::Load("uvChecker.jpg");
+	sprite_ = Sprite::Create(SpriteUvChecker_, {100, 50});
+	ModelUvChecker_ = TextureManager::Load("UvChecker.jpg");
 	model_ = Model::Create();
-	worldTransform_.Initialize();
+	//worldTransform_.Initialize();
 	viewProjection_.Initialize();
-	SoundMokugyo_ = audio_->LoadWave("mokugyo.wav");
-	audio_->PlayWave(SoundMokugyo_);
-	VoiceMokugyo_ = audio_->PlayWave(SoundMokugyo_, true);
-	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
-	debugCamera_ = new DebugCamera(1280, 720);
-	AxisIndicator::GetInstance()->SetVisible(true);
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());*/
+	//SoundMokugyo_ = audio_->LoadWave("mokugyo.wav");
+	//audio_->PlayWave(SoundMokugyo_);
+	//VoiceMokugyo_ = audio_->PlayWave(SoundMokugyo_, true);
+	//PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
+	//debugCamera_ = new DebugCamera(1280, 720);
+	//AxisIndicator::GetInstance()->SetVisible(true);
+	//AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 }
 
 void GameScene::Update() {
