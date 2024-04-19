@@ -9,9 +9,9 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() { 
-	delete sprite_;
-	delete model_;
-	delete debugCamera_; 
+	//delete sprite_;
+	//delete model_;
+	//delete debugCamera_; 
 }
 
 void GameScene::Initialize() {
@@ -19,7 +19,7 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	SpriteMario_ = TextureManager::Load("mario.jpg");
+	/*SpriteMario_ = TextureManager::Load("mario.jpg");
 	sprite_ = Sprite::Create(SpriteMario_, {100, 50});
 	ModelMario_ = TextureManager::Load("mario.jpg");
 	model_ = Model::Create();
@@ -31,26 +31,26 @@ void GameScene::Initialize() {
 	PrimitiveDrawer::GetInstance()->SetViewProjection(&viewProjection_);
 	debugCamera_ = new DebugCamera(1280, 720);
 	AxisIndicator::GetInstance()->SetVisible(true);
-	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());*/
 }
 
 void GameScene::Update() {
-	Vector2 position = sprite_->GetPosition();
-	position.x += 2.0f;
-	position.y += 1.0f;
-	sprite_->SetPosition(position);
-	if (input_->TriggerKey(DIK_SPACE)) {
-		audio_->StopWave(VoiceMokugyo_);
-	}
-#ifdef DEBUG
-	ImGui::Begin("Debug1");
-	ImGui::Text("Kamata Tarou %d.%d.%d", 2050, 12, 31);
-	ImGui::InputFloat3("InputFloat3", inputFloat3);
-	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
-	ImGui::ShowDemoWindow();
-	ImGui::End();
-#endif
-	debugCamera_->Update();
+//	Vector2 position = sprite_->GetPosition();
+//	position.x += 2.0f;
+//	position.y += 1.0f;
+//	sprite_->SetPosition(position);
+//	if (input_->TriggerKey(DIK_SPACE)) {
+//		audio_->StopWave(VoiceMokugyo_);
+//	}
+//#ifdef DEBUG
+//	ImGui::Begin("Debug1");
+//	ImGui::Text("Kamata Tarou %d.%d.%d", 2050, 12, 31);
+//	ImGui::InputFloat3("InputFloat3", inputFloat3);
+//	ImGui::SliderFloat3("SliderFloat3", inputFloat3, 0.0f, 1.0f);
+//	ImGui::ShowDemoWindow();
+//	ImGui::End();
+//#endif
+//	debugCamera_->Update();
 
 }
 
@@ -81,11 +81,11 @@ void GameScene::Draw() {
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
 
-	model_->Draw(worldTransform_, debugCamera_->GetViewProjection(), ModelMario_);
+	/*model_->Draw(worldTransform_, debugCamera_->GetViewProjection(), ModelMario_);*/
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
-	PrimitiveDrawer::GetInstance()->DrawLine3d({0, 0, 0}, {0, 10, 0}, {1.0f, 0.0f, 0.0f, 1.0f});
+	//PrimitiveDrawer::GetInstance()->DrawLine3d({0, 0, 0}, {0, 10, 0}, {1.0f, 0.0f, 0.0f, 1.0f});
 #pragma endregion
 
 #pragma region 前景スプライト描画
