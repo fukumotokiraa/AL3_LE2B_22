@@ -1,13 +1,13 @@
 #pragma once
 
+#include"Player.h"
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
 #include "Sprite.h"
-#include "ViewProjection.h"
+#include"ViewProjection.h"
 #include "WorldTransform.h"
-#include<DebugCamera.h>
 
 /// <summary>
 /// ゲームシーン
@@ -44,17 +44,14 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-	
-	uint32_t SpriteUvChecker_ = 0; 
-	Sprite* sprite_ = nullptr;
-	uint32_t ModelUvChecker_ = 0;
+	uint32_t textureHandle_ = 0; 
 	Model* model_ = nullptr;
-	//WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
+	Player* player_ = nullptr;
+
+	
 	//uint32_t SoundMokugyo_ = 0;
 	//uint32_t VoiceMokugyo_ = 0;
-	//float inputFloat3[3] = {0, 0, 0};
-	//DebugCamera* debugCamera_ = nullptr;
 
 
 	/// <summary>

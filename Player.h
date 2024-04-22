@@ -6,23 +6,24 @@
 class Player {
 public:
 	/// <summary>
-	/// ‰Šú‰»
+	/// åˆæœŸåŒ–
 	/// </summary>
-	void Initialize();
+	void Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection);
 
 	/// <summary>
-	/// –ˆƒtƒŒ[ƒ€ˆ—
+	/// æ¯ãƒ•ãƒ¬ãƒ¼ãƒ å‡¦ç†
 	/// </summary>
 	void Update();
 
 	/// <summary>
-	/// •`‰æ
+	/// æç”»
 	/// </summary>
 	void Draw();
 
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
-	uint32_t SpriteUvChecker_ = 0; 
+	uint32_t textureHandle_ = 0; 
+	ViewProjection* viewProjection_ = nullptr;
 
 };
