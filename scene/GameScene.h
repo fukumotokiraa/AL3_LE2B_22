@@ -8,6 +8,8 @@
 #include "Sprite.h"
 #include"ViewProjection.h"
 #include "WorldTransform.h"
+#include<vector>
+#include<DebugCamera.h>
 
 /// <summary>
 /// ゲームシーン
@@ -48,10 +50,19 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
+	Model* modelBlock_ = nullptr;
+	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+
+	//デバッグカメラ有効
+	bool isDebugCameraActive_ = false;
+	//デバッグカメラ
+	DebugCamera* debugCamera_ = nullptr;
+
+
+
 
 	
-	//uint32_t SoundMokugyo_ = 0;
-	//uint32_t VoiceMokugyo_ = 0;
+
 
 
 	/// <summary>
