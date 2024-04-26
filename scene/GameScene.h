@@ -10,6 +10,7 @@
 #include "WorldTransform.h"
 #include<vector>
 #include<DebugCamera.h>
+#include"Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -52,6 +53,8 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	Model* modelBlock_ = nullptr;
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
+	Skydome* skydome_ = nullptr;
+	Model* modelSkydome_ = nullptr;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
