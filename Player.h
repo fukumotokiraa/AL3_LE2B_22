@@ -54,4 +54,6 @@ private:
 	// ジャンプ初速
 	static inline const float kJumpAcceleration = 0.15f;
 
+	bool isLimitUpper_ = false;
+
 };

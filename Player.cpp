@@ -64,11 +64,17 @@ void Player::Update() {
 		// 非入力時は移動減衰をかける
 		velocity_.x *= (1.0f - kAttennuation);
 	}
-	if (Input::GetInstance()->PushKey(DIK_UP)) {
-		// ジャンプ初速
-		velocity_.x += Vector3(0, kJumpAcceleration, 0).x;
-		velocity_.y += Vector3(0, kJumpAcceleration, 0).y;
-		velocity_.z += Vector3(0, kJumpAcceleration, 0).z;
+	if (isLimitUpper_ == false) {
+		if (Input::GetInstance()->PushKey(DIK_UP)) {
+			// ジャンプ初速
+			velocity_.x += Vector3(0, kJumpAcceleration, 0).x;
+			velocity_.y += Vector3(0, kJumpAcceleration, 0).y;
+			velocity_.z += Vector3(0, kJumpAcceleration, 0).z;
+
+			if (velocity_.y >= 1) {
+				isLimitUpper_ = true;
+			}
+		}
 	}
 	// 接地状態
 	if (onGround_) {
@@ -95,6 +101,7 @@ void Player::Update() {
 			velocity_.y = 0.0f;
 			// 接地状態に移行
 			onGround_ = true;
+			isLimitUpper_ = false;
 		}
 	}
 	// 移動
