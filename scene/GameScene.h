@@ -58,6 +58,7 @@ private: // メンバ変数
 	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 	Skydome* skydome_ = nullptr;
 	Model* modelSkydome_ = nullptr;
+	Model* modelPlayerCube_ = nullptr;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;

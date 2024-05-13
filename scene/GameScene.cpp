@@ -7,7 +7,6 @@ GameScene::GameScene() {}
 
 GameScene::~GameScene() {
 	delete player_;
-	delete model_;
 	delete modelBlock_;
 	for (std::vector<WorldTransform*>& worldTransformBlocksLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlocksLine) {
@@ -19,6 +18,7 @@ GameScene::~GameScene() {
 	delete skydome_;
 	delete modelSkydome_;
 	delete mapChipField_;
+	delete modelPlayerCube_;
 }
 
 void GameScene::Initialize() {
@@ -27,12 +27,11 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
-	model_ = Model::Create();
 	
 	player_ = new Player();
-	player_->Initialize(model_, textureHandle_, &viewProjection_);
 	modelBlock_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+	modelPlayerCube_ = Model::CreateFromOBJ("PlayerCube", true);
 
 
 
@@ -42,6 +41,11 @@ void GameScene::Initialize() {
 
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_, textureHandle_, &viewProjection_);
+
+	//座標をマップチップ単位で指定
+	Vector3 PlayerPosition = mapChipField_->GetMapChipPositionByIndex(3, 18);
+
+	player_->Initialize(modelPlayerCube_, &viewProjection_, PlayerPosition);
 
 	//ビュープロジェクション
 	viewProjection_.farZ = 200;
@@ -143,8 +147,8 @@ void GameScene::Draw() {
 
 void GameScene::GenerateBlocks() {
 	// 要素数
-	const uint32_t kNumBlockVirtical = 10;
-	const uint32_t kNumBlockHorizontal = 20;
+	const uint32_t kNumBlockVirtical = 20;
+	const uint32_t kNumBlockHorizontal = 100;
 	//// ブロック１個分の横幅
 	//const float kBlockWidth = 2.0f;
 	//const float kBlockHeight = 2.0f;
