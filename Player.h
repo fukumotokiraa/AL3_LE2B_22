@@ -52,6 +52,6 @@ private:
 	// 最大落下速度
 	static inline const float kLimitFallSpeed = 10.0f;
 	// ジャンプ初速
-	static inline const float kJumpAcceleration = 0.3f;
+	static inline const float kJumpAcceleration = 0.15f;
 
 };

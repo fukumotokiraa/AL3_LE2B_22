@@ -88,7 +88,7 @@ void Player::Update() {
 		// 着地
 		if (landing) {
 			// めり込み排斥
-			worldTransform_.translation_.y = 1.0f;
+			worldTransform_.translation_.y = 2.0f;
 			// 摩擦で横方向が減衰する
 			// velocity_.x *= (1.0f - kAttennuationLanding);
 			// 下方向速度をリセット
