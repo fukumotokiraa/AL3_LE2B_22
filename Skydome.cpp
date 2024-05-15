@@ -10,7 +10,7 @@ void Skydome::Initialize(Model* model, uint32_t textureHandle, ViewProjection* v
 }
 
 void Skydome::Update() {
-	worldTransform_.scale_ = {100, 100, 100};
+	worldTransform_.scale_ = {150, 150, 150};
 	worldTransform_.UpdateMatrix(); 
 }
 
