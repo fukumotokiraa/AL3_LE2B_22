@@ -29,19 +29,23 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	
+	mapChipField_ = new MapChipField;
+	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+
 	player_ = new Player();
 	modelBlock_ = Model::Create();
 	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 	modelPlayerCube_ = Model::CreateFromOBJ("PlayerCube", true);
 
-
-
+	player_->SetMapChipField(mapChipField_);
 
 	//デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
 	skydome_ = new Skydome();
 	skydome_->Initialize(modelSkydome_, textureHandle_, &viewProjection_);
+
+
 
 	//座標をマップチップ単位で指定
 	Vector3 PlayerPosition = mapChipField_->GetMapChipPositionByIndex(3, 18);
@@ -52,8 +56,7 @@ void GameScene::Initialize() {
 	viewProjection_.farZ = 200;
 	viewProjection_.Initialize();
 
-	mapChipField_ = new MapChipField;
-	mapChipField_->LoadMapChipCsv("Resources/blocks.csv");
+
 
 	GenerateBlocks();
 
@@ -62,6 +65,8 @@ void GameScene::Initialize() {
 	cameraController_->SetTarget(player_);
 	cameraController_->Reset();
 	cameraController_->SetMovableArea(cameraController_->GetMovableArea());
+
+
 }
 
 void GameScene::Update() { 
@@ -162,10 +167,10 @@ void GameScene::GenerateBlocks() {
 	//const float kBlockHeight = 2.0f;
 	// 要素数を変更する
 	// 列数を設定
-	worldTransformBlocks_.resize(mapChipField_->kNumBlockVirtical);
-	for (uint32_t i = 0; i < mapChipField_->kNumBlockVirtical; i++) {
+	worldTransformBlocks_.resize(kNumBlockVirtical);
+	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
 		// １列の要素数を設定
-		worldTransformBlocks_[i].resize(mapChipField_->kNumBlockHorizontal);
+		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
 	}
 
 	// キューブの生成
