@@ -18,7 +18,7 @@ private:
 		float bottom = 0.0f;
 		float top = 1.0f;
 	};
-	Rect movableArea_ = {0, 100, 0, 100};
+	Rect movableArea_ = {0, 100, 10, 50};
 	//カメラの目標座標
 	Vector3 targetCoordinates_ = targetOffset_;
 	static inline const float kInterpolationRate = 0.5f;

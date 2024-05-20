@@ -26,7 +26,7 @@ void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vect
 }
 
 void Player::Update() {
-
+	collisionMapInfo.ceiling = false;
 
 	ImGui::Begin(" 適当な名前 ");
 	ImGui::Text("velocity.y = %f", velocity_.y);
@@ -36,13 +36,14 @@ void Player::Update() {
 	Move();
 
 
+
 	//移動量に速度の値をコピー
 	collisionMapInfo.movement = velocity_;
 
 	//マップ衝突チェック
 	MapCollision(collisionMapInfo);
 
-	ResultMove(collisionMapInfo);
+	//ResultMove(collisionMapInfo);
 	Ceiling(collisionMapInfo);
 
 
@@ -68,6 +69,7 @@ void Player::Update() {
 void Player::Draw() { model_->Draw(worldTransform_, *viewProjection_); }
 
 void Player::Move() {
+	collisionMapInfo.landing = false;
 	if (velocity_.y < 0) {
 		if (worldTransform_.translation_.y <= 2.0f) {
 			collisionMapInfo.landing = true;
@@ -113,18 +115,15 @@ void Player::Move() {
 	}
 	// 接地状態
 	if (onGround_) {
-		if (isLimitUpper_ == false) {
+		//if (isLimitUpper_ == false) {
 			if (Input::GetInstance()->PushKey(DIK_UP)) {
 				// ジャンプ初速
-				velocity_.x += Vector3(0, kJumpAcceleration, 0).x;
 				velocity_.y += Vector3(0, kJumpAcceleration, 0).y;
-				velocity_.z += Vector3(0, kJumpAcceleration, 0).z;
-
-				if (velocity_.y >= 1) {
+				/*if (velocity_.y >= 1) {
 					isLimitUpper_ = true;
-				}
+				}*/
 			}
-		}
+		//}
 		// ジャンプ開始
 		if (velocity_.y > 0.0f) {
 			// 空中状態に移行
@@ -133,9 +132,7 @@ void Player::Move() {
 		// 空中
 	} else {
 		// 落下速度
-		velocity_.x += Vector3(0, -kGravityAcceleration, 0).x;
 		velocity_.y += Vector3(0, -kGravityAcceleration, 0).y;
-		velocity_.z += Vector3(0, -kGravityAcceleration, 0).z;
 		// 落下制限速度
 		velocity_.y = std::max(velocity_.y, -kLimitFallSpeed);
 		// 着地
@@ -148,13 +145,11 @@ void Player::Move() {
 			velocity_.y = 0.0f;
 			// 接地状態に移行
 			onGround_ = true;
-			isLimitUpper_ = false;
+			//isLimitUpper_ = false;
 		}
 	}
 	// 移動
-	worldTransform_.translation_.x += velocity_.x;
-	worldTransform_.translation_.y += velocity_.y;
-	worldTransform_.translation_.z += velocity_.z;
+	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 	// 行列を定数バッファに転送
 	worldTransform_.TransferMatrix();
 
@@ -204,7 +199,7 @@ void Player::TopCollision(CollisionMapInfo& info) {
 }
 
 void Player::ResultMove(CollisionMapInfo& info) {
-	Add(worldTransform_.translation_ , info.movement); 
+	worldTransform_.translation_ = Add(worldTransform_.translation_, info.movement); 
 }
 
 void Player::Ceiling(CollisionMapInfo& info) {

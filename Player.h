@@ -36,7 +36,7 @@ private:
 	// 接地状態フラグ
 	bool onGround_ = true;
 	// 重力加速度（下方向）
-	static inline const float kGravityAcceleration = 0.1f;
+	static inline const float kGravityAcceleration = 0.05f;
 	// 最大落下速度
 	static inline const float kLimitFallSpeed = 5.0f;
 	// ジャンプ初速
