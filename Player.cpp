@@ -14,15 +14,6 @@ Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
         {-kWidth / 2.0f, +kHeight / 2.0f, 0}
     };
 	return Add(center , offsetTable[static_cast<uint32_t>(corner)]);
-	//if (corner==kRightBottom) {
-	//	return Add(center , {+kWidth / 2.0f, -kHeight / 2.0f, 0});
-	//} else if (corner==kLeftBottom) {
-	//	return Add(center , {-kWidth / 2.0f, -kHeight / 2.0f, 0});
-	//} else if (corner == kLeftBottom) {
-	//	return Add(center , {+kWidth / 2.0f, +kHeight / 2.0f, 0});
-	//} else {
-	//	return Add(center , {-kWidth / 2.0f, +kHeight / 2.0f, 0});
-	//}
 }
 
 void Player::Initialize(Model* model, ViewProjection* viewProjection, const Vector3& Position) {
@@ -43,8 +34,6 @@ void Player::Update() {
 
 
 	Move();
-
-
 
 
 	//移動量に速度の値をコピー
