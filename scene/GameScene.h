@@ -4,6 +4,7 @@
 #include "DirectXCommon.h"
 #include "Input.h"
 #include "Model.h"
+#include "Player.h"
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
@@ -43,6 +44,13 @@ private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
+	uint32_t textureHandle_ = 0;
+	Model* model_ = nullptr;
+	ViewProjection viewProjection_;
+	Player* player_ = nullptr;
+
+	// uint32_t SoundMokugyo_ = 0;
+	// uint32_t VoiceMokugyo_ = 0;
 
 	/// <summary>
 	/// ゲームシーン用
