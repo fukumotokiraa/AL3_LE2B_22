@@ -6,6 +6,7 @@
 #include<imgui.h>
 #include"PlayerBullet.h"
 #include<list>
+#include"Calculation.h"
 
 class Player {
 public:
@@ -29,6 +30,8 @@ public:
 	void Attack();
 
 	~Player();
+
+
 
 private:
 	WorldTransform worldTransform_;

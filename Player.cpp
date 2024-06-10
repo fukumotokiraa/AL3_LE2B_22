@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <cassert>
 
-Vector3 Add(const Vector3& v1, const Vector3& v2) { return {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z}; }
+
 
 void Player::Initialize(Model* model, uint32_t textureHandle /*ViewProjection* viewProjection*/) {
 	assert(model);
@@ -16,7 +16,14 @@ void Player::Update() {
 	//// 行列を定数バッファに転送
 	//worldTransform_.TransferMatrix();
 
-
+	//デスフラグの立った玉を削除
+	bullets_.remove_if([](PlayerBullet* bullet) {
+		if (bullet->IsDead()) {
+			delete bullet;
+			return true;
+		}
+		return false;
+	});
 
 	//キャラクターの移動ベクトル
 	Vector3 move = {0, 0, 0};
@@ -83,13 +90,14 @@ void Player::Rotate() {
 
 void Player::Attack() {
 	if (input_->TriggerKey(DIK_SPACE)) {
-		//if (bullet_) {
-		//	delete bullet_;
-		//	bullet_ = nullptr;
-		//}
+		//玉の速度
+		const float kBulletSpeed = 1.0f;
+		Vector3 velocity(0, 0, kBulletSpeed);
+		//速度ベクトルを自機の向きに合わせて回転させる
+		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		//玉を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_);
+		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
 		//玉を登録する
 		bullets_.push_back(newBullet);
 	}
