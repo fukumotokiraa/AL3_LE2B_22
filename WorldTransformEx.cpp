@@ -50,7 +50,7 @@ Matrix4x4 MakeAffineMatrix(Vector3& radian, const Vector3& scale, const Vector3&
 
 //スケール、回転、平行移動を合成して行列を計算する
 void WorldTransform::UpdateMatrix(){ 
-	matWorld_ = MakeAffineMatrix(rotation_, scale_, translation_); 
+	matWorld_ = MakeAffineMatrix(scale_, rotation_, translation_); 
 	//定数バッファに転送する
 	TransferMatrix();
 };

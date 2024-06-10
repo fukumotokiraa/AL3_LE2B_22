@@ -30,15 +30,15 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 	player_->Update();
 	debugCamera_->Update();
-#ifdef _DEBUG
-	if (input_->TriggerKey(DIK_SPACE)) {
-		if (isDebugCameraActive_){
-			isDebugCameraActive_ = false;
-		} else {
-			isDebugCameraActive_ = true;
-		}
-	}
-#endif // DEBUG
+//#ifdef _DEBUG
+//	if (input_->TriggerKey(DIK_SPACE)) {
+//		if (isDebugCameraActive_){
+//			isDebugCameraActive_ = false;
+//		} else {
+//			isDebugCameraActive_ = true;
+//		}
+//	}
+//#endif // DEBUG
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewMatrix();

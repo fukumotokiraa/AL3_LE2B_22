@@ -2,16 +2,14 @@
 
 #include "Model.h"
 #include "WorldTransform.h"
-#include "Input.h"
-#include<imgui.h>
-#include"PlayerBullet.h"
+#include"TextureManager.h"
 
-class Player {
+class PlayerBullet {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection);
+	void Initialize(Model* model, const Vector3& positon);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -21,17 +19,11 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
-
-	void Rotate();
-
-	void Attack();
+	void Draw(const ViewProjection& viewProjection);
 
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0;
-	ViewProjection* viewProjection_ = nullptr;
-	Input* input_ = nullptr;
-	PlayerBullet* bullet_ = nullptr;
+	
 };
