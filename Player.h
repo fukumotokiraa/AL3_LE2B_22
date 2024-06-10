@@ -5,6 +5,7 @@
 #include "Input.h"
 #include<imgui.h>
 #include"PlayerBullet.h"
+#include<list>
 
 class Player {
 public:
@@ -35,5 +36,5 @@ private:
 	uint32_t textureHandle_ = 0;
 	//ViewProjection* viewProjection_ = nullptr;
 	Input* input_ = nullptr;
-	PlayerBullet* bullet_ = nullptr;
+	std::list<PlayerBullet*> bullets_;
 };

@@ -56,16 +56,17 @@ void Player::Update() {
 
 	Attack();
 
-	if (bullet_) {
-		bullet_->Update();
+	for (PlayerBullet*bullet : bullets_) {
+		bullet->Update();
 	}
+
 	worldTransform_.UpdateMatrix();
 }
 
 void Player::Draw(ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_); 
-	if (bullet_) {
-		bullet_->Draw(viewProjection);
+	for (PlayerBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
 	}
 }
 
@@ -81,13 +82,21 @@ void Player::Rotate() {
 }
 
 void Player::Attack() {
-	if (input_->PushKey(DIK_SPACE)) {
+	if (input_->TriggerKey(DIK_SPACE)) {
+		//if (bullet_) {
+		//	delete bullet_;
+		//	bullet_ = nullptr;
+		//}
 		//玉を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, worldTransform_.translation_);
 		//玉を登録する
-		bullet_ = newBullet;
+		bullets_.push_back(newBullet);
 	}
 }
 
-Player::~Player() { delete bullet_; }
+Player::~Player() { 
+	for (PlayerBullet* bullet : bullets_) {
+		delete bullet;
+	}
+}
