@@ -11,7 +11,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection);
+	void Initialize(Model* model, uint32_t textureHandle /*ViewProjection* viewProjection*/);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -21,17 +21,19 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(ViewProjection& viewProjection);
 
 	void Rotate();
 
 	void Attack();
 
+	~Player();
+
 private:
 	WorldTransform worldTransform_;
 	Model* model_ = nullptr;
 	uint32_t textureHandle_ = 0;
-	ViewProjection* viewProjection_ = nullptr;
+	//ViewProjection* viewProjection_ = nullptr;
 	Input* input_ = nullptr;
 	PlayerBullet* bullet_ = nullptr;
 };

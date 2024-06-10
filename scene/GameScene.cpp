@@ -16,7 +16,7 @@ void GameScene::Initialize() {
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	player_ = new Player();
-	player_->Initialize(model_, textureHandle_, &viewProjection_);
+	player_->Initialize(model_, textureHandle_);
 	debugCamera_ = new DebugCamera(1280, 720);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
@@ -30,15 +30,15 @@ void GameScene::Initialize() {
 void GameScene::Update() { 
 	player_->Update();
 	debugCamera_->Update();
-//#ifdef _DEBUG
-//	if (input_->TriggerKey(DIK_SPACE)) {
-//		if (isDebugCameraActive_){
-//			isDebugCameraActive_ = false;
-//		} else {
-//			isDebugCameraActive_ = true;
-//		}
-//	}
-//#endif // DEBUG
+#ifdef _DEBUG
+	if (input_->TriggerKey(DIK_SPACE)) {
+		if (isDebugCameraActive_){
+			isDebugCameraActive_ = false;
+		} else {
+			isDebugCameraActive_ = true;
+		}
+	}
+#endif // DEBUG
 	if (isDebugCameraActive_) {
 		debugCamera_->Update();
 		viewProjection_.matView = debugCamera_->GetViewMatrix();
@@ -78,7 +78,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	player_->Draw();
+	player_->Draw(viewProjection_);
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

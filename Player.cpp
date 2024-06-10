@@ -3,10 +3,10 @@
 
 Vector3 Add(const Vector3& v1, const Vector3& v2) { return {v1.x + v2.x, v1.y + v2.y, v1.z + v2.z}; }
 
-void Player::Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection) {
+void Player::Initialize(Model* model, uint32_t textureHandle /*ViewProjection* viewProjection*/) {
 	assert(model);
 	worldTransform_.Initialize();
-	viewProjection_ = viewProjection;
+	//viewProjection_ = viewProjection;
 	textureHandle_ = textureHandle;
 	model_ = model;
 	input_ = Input::GetInstance();
@@ -53,19 +53,19 @@ void Player::Update() {
 
 	Rotate();
 
-	worldTransform_.UpdateMatrix();
 
 	Attack();
 
 	if (bullet_) {
 		bullet_->Update();
 	}
+	worldTransform_.UpdateMatrix();
 }
 
-void Player::Draw() {
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_); 
+void Player::Draw(ViewProjection& viewProjection) {
+	model_->Draw(worldTransform_, viewProjection, textureHandle_); 
 	if (bullet_) {
-		bullet_->Draw(*viewProjection_);
+		bullet_->Draw(viewProjection);
 	}
 }
 
@@ -89,3 +89,5 @@ void Player::Attack() {
 		bullet_ = newBullet;
 	}
 }
+
+Player::~Player() { delete bullet_; }
