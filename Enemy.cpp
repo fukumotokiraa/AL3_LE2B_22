@@ -15,6 +15,9 @@ void Enemy::Initialize(Model* model) {
 	worldTransform_.translation_ = position_;
 
 	velocity_ = {0, 0, EnemySpeed};
+
+	fireTimer_ = kFireInterval;
+
 }
 
 void Enemy::Update() {
@@ -31,6 +34,11 @@ void Enemy::Update() {
 	velocity_ = {0, 0, EnemySpeed};
 	worldTransform_.translation_ = Subtract(worldTransform_.translation_, velocity_);
 
+	for (EnemyBullet* bullet:bullets_) {
+		bullet->Update();
+	}
+
+
 
 	ImGui::Begin(" ");
 	ImGui::SliderFloat3("Enemy", &worldTransform_.translation_.x, -50.0f, 50.0f);
@@ -43,6 +51,9 @@ void Enemy::Update() {
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	for (EnemyBullet* bullet : bullets_) {
+		bullet->Draw(viewProjection);
+	}
 }
 
 void Enemy::Approach() {
@@ -51,8 +62,36 @@ void Enemy::Approach() {
 	if (worldTransform_.translation_.z < 0.0f) {
 		phase_ = Phase::Leave;
 	}
+	// 発射タイマーをカウントダウン
+	fireTimer_--;
+	// 指定時間に達した
+	if (fireTimer_ == 0) {
+		// 弾を発射
+		Fire();
+		// 発射タイマーを初期化
+		fireTimer_ = kFireInterval;
+	}
 }
 
 void Enemy::Leave() {
 	EnemySpeed = LeaveSpeed; 
+}
+
+void Enemy::Fire() {
+	// 玉の速度
+	const float kBulletSpeed = 1.5f;
+	Vector3 velocity(0, 0, kBulletSpeed);
+	// 速度ベクトルを自機の向きに合わせて回転させる
+	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	// 玉を生成し、初期化
+	EnemyBullet* newBullet = new EnemyBullet();
+	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
+	// 玉を登録する
+	bullets_.push_back(newBullet);
+}
+
+Enemy::~Enemy() {
+	for (EnemyBullet* bullet : bullets_) {
+		delete bullet;
+	}
 }
