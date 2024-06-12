@@ -9,6 +9,7 @@
 #include "ViewProjection.h"
 #include "WorldTransform.h"
 #include "DebugCamera.h"
+#include "Enemy.h"
 
 /// <summary>
 /// ゲームシーン
@@ -51,6 +52,7 @@ private: // メンバ変数
 	Player* player_ = nullptr;
 	bool isDebugCameraActive_ = false;
 	DebugCamera* debugCamera_ = nullptr;
+	Enemy* enemy_ = nullptr;
 
 	// uint32_t SoundMokugyo_ = 0;
 	// uint32_t VoiceMokugyo_ = 0;
