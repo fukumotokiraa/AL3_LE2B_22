@@ -19,7 +19,18 @@ void Enemy::Initialize(Model* model) {
 
 void Enemy::Update() {
 	// 座標を移動させる
+	switch (phase_) {
+	case Phase::Approach:
+	default:
+		Approach();
+		break;
+	case Phase::Leave:
+		Leave();
+		break;
+	}
+	velocity_ = {0, 0, EnemySpeed};
 	worldTransform_.translation_ = Subtract(worldTransform_.translation_, velocity_);
+
 
 	ImGui::Begin(" ");
 	ImGui::SliderFloat3("Enemy", &worldTransform_.translation_.x, -50.0f, 50.0f);
@@ -28,9 +39,20 @@ void Enemy::Update() {
 
 	// 行列を更新
 	worldTransform_.UpdateMatrix();
-
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
 	model_->Draw(worldTransform_, viewProjection, textureHandle_);
+}
+
+void Enemy::Approach() {
+	EnemySpeed = ApproachSpeed;
+	// 規定の位置に到達したら離脱
+	if (worldTransform_.translation_.z < 0.0f) {
+		phase_ = Phase::Leave;
+	}
+}
+
+void Enemy::Leave() {
+	EnemySpeed = LeaveSpeed; 
 }
