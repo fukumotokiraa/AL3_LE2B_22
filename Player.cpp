@@ -108,3 +108,13 @@ Player::~Player() {
 		delete bullet;
 	}
 }
+
+Vector3 Player::GetWorldPosition() {
+	Vector3 WorldPos;//ワールド座標を入れる変数
+	//ワールド行列の平行移動成分を取得(ワールド座標)
+	WorldPos.x = worldTransform_.matWorld_.m[3][0];
+	WorldPos.y = worldTransform_.matWorld_.m[3][1];
+	WorldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return WorldPos;
+}

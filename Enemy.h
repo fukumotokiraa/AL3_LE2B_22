@@ -7,6 +7,8 @@
 #include <imgui.h>
 #include "EnemyBullet.h"
 
+class Player;//自機クラスの前方宣言
+
 class Enemy {
 public:
 	/// <summary>
@@ -30,8 +32,11 @@ public:
 
 	void Fire();
 
+	void SetPlayer(Player* player) { player_ = player; }
 
 	~Enemy();
+
+	Vector3 GetWorldPosition();
 
 
 	static const int kFireInterval = 60;//発射間隔
@@ -52,5 +57,7 @@ private:
 	Phase phase_ = Phase::Approach;
 	std::list<EnemyBullet*> bullets_;
 	int32_t fireTimer_ = 0;
+	Player* player_ = nullptr;//自キャラ
+	Vector3 DifferenceVector;
 
 };

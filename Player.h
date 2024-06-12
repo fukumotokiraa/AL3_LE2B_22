@@ -31,7 +31,7 @@ public:
 
 	~Player();
 
-
+	Vector3 GetWorldPosition();
 
 private:
 	WorldTransform worldTransform_;

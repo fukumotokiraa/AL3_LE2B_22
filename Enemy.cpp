@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "cassert"
+#include "Player.h"
 
 void Enemy::Initialize(Model* model) {
 	// NULLポインタチェック
@@ -78,11 +79,16 @@ void Enemy::Leave() {
 }
 
 void Enemy::Fire() {
+	assert(player_);
 	// 玉の速度
 	const float kBulletSpeed = 1.5f;
-	Vector3 velocity(0, 0, kBulletSpeed);
-	// 速度ベクトルを自機の向きに合わせて回転させる
-	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	Vector3 velocity(0, 0, 0);
+
+	player_->GetWorldPosition();
+	GetWorldPosition();
+	DifferenceVector = Subtract(player_->GetWorldPosition(), GetWorldPosition());
+	velocity = Multiply(kBulletSpeed, Normalize(DifferenceVector));
+
 	// 玉を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
@@ -94,4 +100,14 @@ Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;
 	}
+}
+
+Vector3 Enemy::GetWorldPosition() {
+	Vector3 WorldPos; // ワールド座標を入れる変数
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	WorldPos.x = worldTransform_.matWorld_.m[3][0];
+	WorldPos.y = worldTransform_.matWorld_.m[3][1];
+	WorldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return WorldPos;
 }

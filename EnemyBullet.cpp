@@ -18,7 +18,7 @@ void EnemyBullet::Initialize(Model* model, const Vector3& positon, const Vector3
 
 void EnemyBullet::Update() {
 	// 座標を移動させる
-	worldTransform_.translation_ = Subtract(worldTransform_.translation_, velocity_);
+	worldTransform_.translation_ = Add(worldTransform_.translation_, velocity_);
 
 	// 時間経過でデス
 	if (--deathTimer_ <= 0) {

@@ -21,6 +21,7 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_);
+	enemy_->SetPlayer(player_);
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
