@@ -96,6 +96,8 @@ void Enemy::Fire() {
 	bullets_.push_back(newBullet);
 }
 
+void Enemy::OnCollision() {}
+
 Enemy::~Enemy() {
 	for (EnemyBullet* bullet : bullets_) {
 		delete bullet;

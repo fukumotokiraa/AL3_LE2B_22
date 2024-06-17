@@ -22,7 +22,11 @@ public:
 	/// </summary>
 	void Draw(const ViewProjection& viewProjection);
 
+	void OnCollision(); // 衝突を検出したら呼び出されるコールバック関数
+
 	bool IsDead() const { return isDead_; }
+
+	Vector3 GetWorldPosition();
 
 private:
 	WorldTransform worldTransform_;

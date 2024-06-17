@@ -54,7 +54,7 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
-
+	CheckAllCollisions();
 }
 
 void GameScene::Draw() {
@@ -103,4 +103,71 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 #pragma endregion
+}
+
+void GameScene::CheckAllCollisions() {
+	//判定対象AとBの座標
+	Vector3 posA, posB;
+
+	//自弾リストの取得
+	const std::list<PlayerBullet*>& playerBullets = player_->GetBullet();
+	//敵弾リストの取得
+	const std::list<EnemyBullet*>& enemyBullets = enemy_->GetBullet();
+
+	#pragma region 	自キャラと敵弾の当たり判定
+	posA = player_->GetWorldPosition();
+
+	for (EnemyBullet* bullet : enemyBullets) {
+		posB = bullet->GetWorldPosition();
+
+		float Distance = ((posB.x - posA.x) * (posB.x - posA.x)) + ((posB.y - posA.y) * (posB.y - posA.y)) + ((posB.z - posA.z) * (posB.z - posA.z));
+		float ARadius = 1.0f;
+		float BRadius = 1.0f;
+
+		if (Distance <= (ARadius + BRadius) * (ARadius + BRadius)) {
+			//衝突時コールバックを呼び出す
+			player_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
+
+
+	#pragma region 自弾と敵キャラの当たり判定
+	posA = enemy_->GetWorldPosition();
+
+	for (PlayerBullet* bullet : playerBullets) {
+		posB = bullet->GetWorldPosition();
+
+		float Distance = ((posB.x - posA.x) * (posB.x - posA.x)) + ((posB.y - posA.y) * (posB.y - posA.y)) + ((posB.z - posA.z) * (posB.z - posA.z));
+		float ARadius = 1.0f;
+		float BRadius = 1.0f;
+
+ 		if (Distance <= (ARadius + BRadius) * (ARadius + BRadius)) {
+			// 衝突時コールバックを呼び出す
+			enemy_->OnCollision();
+			bullet->OnCollision();
+		}
+	}
+	#pragma endregion
+
+
+	#pragma region 自弾と敵弾の当たり判定
+	for (PlayerBullet* playerBullet : playerBullets) {
+		posA = playerBullet->GetWorldPosition();
+		for (EnemyBullet* enemyBullet : enemyBullets) {
+			posB = enemyBullet->GetWorldPosition();
+
+			float Distance = ((posB.x - posA.x) * (posB.x - posA.x)) + ((posB.y - posA.y) * (posB.y - posA.y)) + ((posB.z - posA.z) * (posB.z - posA.z));
+			float ARadius = 1.0f;
+			float BRadius = 1.0f;
+
+			if (Distance <= (ARadius + BRadius) * (ARadius + BRadius)) {
+				// 衝突時コールバックを呼び出す
+				playerBullet->OnCollision();
+				enemyBullet->OnCollision();
+			}
+		}
+	}
+	#pragma endregion
 }

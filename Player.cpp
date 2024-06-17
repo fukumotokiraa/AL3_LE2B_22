@@ -103,6 +103,8 @@ void Player::Attack() {
 	}
 }
 
+void Player::OnCollision() {}
+
 Player::~Player() { 
 	for (PlayerBullet* bullet : bullets_) {
 		delete bullet;

@@ -29,9 +29,13 @@ public:
 
 	void Attack();
 
+	void OnCollision();//衝突を検出したら呼び出されるコールバック関数
+
 	~Player();
 
 	Vector3 GetWorldPosition();
+
+	const std::list<PlayerBullet*>& GetBullet() const { return bullets_; }
 
 private:
 	WorldTransform worldTransform_;

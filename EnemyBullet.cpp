@@ -30,5 +30,19 @@ void EnemyBullet::Update() {
 }
 
 void EnemyBullet::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle_); 
+	if (isDead_ == false) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
+	};
+}
+
+void EnemyBullet::OnCollision() { isDead_ = true; }
+
+Vector3 EnemyBullet::GetWorldPosition() {
+	Vector3 WorldPos; // ワールド座標を入れる変数
+	// ワールド行列の平行移動成分を取得(ワールド座標)
+	WorldPos.x = worldTransform_.matWorld_.m[3][0];
+	WorldPos.y = worldTransform_.matWorld_.m[3][1];
+	WorldPos.z = worldTransform_.matWorld_.m[3][2];
+
+	return WorldPos;
 }
