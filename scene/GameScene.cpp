@@ -12,14 +12,19 @@ GameScene::~GameScene() {
 	delete enemy_;
 	delete skydome_;
 	delete modelSkydome_;
+	delete railCamera_;
 }
 
 void GameScene::Initialize() {
+	worldTransform_.Initialize();
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	model_ = Model::Create();
 	viewProjection_.Initialize();
+	railCamera_ = new RailCamera();
+	railCamera_->Initialize(worldTransform_);
 	player_ = new Player();
-	player_->Initialize(model_, textureHandle_);
+	Vector3 playerPosition(0, 0, 20);
+	player_->Initialize(model_, textureHandle_, playerPosition);
 	debugCamera_ = new DebugCamera(1280, 720);
 	enemy_ = new Enemy();
 	enemy_->Initialize(model_);
@@ -27,6 +32,10 @@ void GameScene::Initialize() {
 	skydome_ = new Skydome();
 	modelSkydome_ = Model::CreateFromOBJ("Skydome", true);
 	skydome_->Initialize(modelSkydome_, &viewProjection_);
+
+	//自キャラとレールカメラの親子関係を結ぶ
+	player_->SetParent(&railCamera_->GetWorldTransform());
+
 	AxisIndicator::GetInstance()->SetVisible(true);
 	AxisIndicator::GetInstance()->SetTargetViewProjection(&viewProjection_);
 
@@ -57,8 +66,13 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の転送
 		viewProjection_.TransferMatrix();
 	} else {
-		// ビュープロジェクション行列の更新と転送
-		viewProjection_.UpdateMatrix();
+		//// ビュープロジェクション行列の更新と転送
+		//viewProjection_.UpdateMatrix();
+		railCamera_->Update();
+		viewProjection_.matView = railCamera_->GetViewMatrix();
+		viewProjection_.matProjection = railCamera_->GetProjectionMatrix();
+
+		viewProjection_.TransferMatrix();
 	}
 	CheckAllCollisions();
 }

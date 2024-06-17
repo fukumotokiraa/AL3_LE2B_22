@@ -13,7 +13,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, uint32_t textureHandle /*ViewProjection* viewProjection*/);
+	void Initialize(Model* model, uint32_t textureHandle,Vector3 playerPosition);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -30,6 +30,8 @@ public:
 	void Attack();
 
 	void OnCollision();//衝突を検出したら呼び出されるコールバック関数
+
+	void SetParent(const WorldTransform* parent);
 
 	~Player();
 

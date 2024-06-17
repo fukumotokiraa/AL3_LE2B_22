@@ -3,13 +3,13 @@
 
 
 
-void Player::Initialize(Model* model, uint32_t textureHandle /*ViewProjection* viewProjection*/) {
+void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosition) {
 	assert(model);
 	worldTransform_.Initialize();
-	//viewProjection_ = viewProjection;
 	textureHandle_ = textureHandle;
 	model_ = model;
 	input_ = Input::GetInstance();
+	worldTransform_.translation_ = Add(worldTransform_.translation_, playerPosition);
 }
 
 void Player::Update() {
@@ -97,13 +97,18 @@ void Player::Attack() {
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
 		//玉を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
-		newBullet->Initialize(model_, worldTransform_.translation_,velocity);
+		newBullet->Initialize(model_, GetWorldPosition(), velocity);
 		//玉を登録する
 		bullets_.push_back(newBullet);
 	}
 }
 
 void Player::OnCollision() {}
+
+void Player::SetParent(const WorldTransform* parent) {
+	//親子関係を結ぶ
+	worldTransform_.parent_ = parent;
+}
 
 Player::~Player() { 
 	for (PlayerBullet* bullet : bullets_) {
