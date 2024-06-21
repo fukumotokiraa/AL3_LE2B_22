@@ -7,6 +7,7 @@
 #include <imgui.h>
 #include "EnemyBullet.h"
 
+class GameScene;//GameSceneの前方宣言
 class Player;//自機クラスの前方宣言
 
 class Enemy {
@@ -14,7 +15,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model);
+	void Initialize(Model* model,const Vector3 position);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -34,13 +35,17 @@ public:
 
 	void SetPlayer(Player* player) { player_ = player; }
 
+	void SetGameScene(GameScene* gameScene) { gameScene_ = gameScene; }
+
 	void OnCollision(); // 衝突を検出したら呼び出されるコールバック関数
+
+	bool IsDead() const { return isDead_; }
 
 	~Enemy();
 
 	Vector3 GetWorldPosition();
 
-	const std::list<EnemyBullet*>& GetBullet() const { return bullets_; }
+	//const std::list<EnemyBullet*>& GetBullet() const { return bullets_; }
 
 
 	static const int kFireInterval = 60;//発射間隔
@@ -59,9 +64,11 @@ private:
 		Leave,    //離脱する
 	};
 	Phase phase_ = Phase::Approach;
-	std::list<EnemyBullet*> bullets_;
+	//std::list<EnemyBullet*> bullets_;
 	int32_t fireTimer_ = 0;
 	Player* player_ = nullptr;//自キャラ
 	Vector3 DifferenceVector;
+	GameScene* gameScene_ = nullptr;
+	bool isDead_ = false; 
 
 };

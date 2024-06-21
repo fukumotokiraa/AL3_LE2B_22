@@ -1,8 +1,9 @@
 #include "Enemy.h"
 #include "cassert"
 #include "Player.h"
+#include "GameScene.h"
 
-void Enemy::Initialize(Model* model) {
+void Enemy::Initialize(Model* model,const Vector3 position) {
 	// NULLポインタチェック
 	assert(model);
 
@@ -12,7 +13,8 @@ void Enemy::Initialize(Model* model) {
 
 	worldTransform_.Initialize();
 	// 初期座標をセット
-	position_ = {0, 10, 50};
+	//position_ = {0, 10, 100};
+	position_ = position;
 	worldTransform_.translation_ = position_;
 
 	velocity_ = {0, 0, EnemySpeed};
@@ -35,15 +37,16 @@ void Enemy::Update() {
 	velocity_ = {0, 0, EnemySpeed};
 	worldTransform_.translation_ = Subtract(worldTransform_.translation_, velocity_);
 
-	for (EnemyBullet* bullet:bullets_) {
-		bullet->Update();
-	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	bullet->Update();
+	//}
 
 
 
 	ImGui::Begin(" ");
-	ImGui::SliderFloat3("Enemy", &worldTransform_.translation_.x, -50.0f, 50.0f);
+	ImGui::SliderFloat3("Enemy", &worldTransform_.translation_.x, -200.0f, 200.0f);
 	ImGui::SliderFloat("EnemyVelocity", &velocity_.z, -1.0f, 1.0f);
+	ImGui::SliderFloat("EnemyWorldPos", &worldTransform_.matWorld_.m[3][2], -2000.0f, 2000.0f);
 	ImGui::End();
 
 	// 行列を更新
@@ -51,10 +54,12 @@ void Enemy::Update() {
 }
 
 void Enemy::Draw(const ViewProjection& viewProjection) {
-	model_->Draw(worldTransform_, viewProjection, textureHandle_);
-	for (EnemyBullet* bullet : bullets_) {
-		bullet->Draw(viewProjection);
+	if (isDead_ == false) {
+		model_->Draw(worldTransform_, viewProjection, textureHandle_);
 	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	bullet->Draw(viewProjection);
+	//}
 }
 
 void Enemy::Approach() {
@@ -81,7 +86,7 @@ void Enemy::Leave() {
 void Enemy::Fire() {
 	assert(player_);
 	// 玉の速度
-	const float kBulletSpeed = 1.5f;
+	const float kBulletSpeed = 0.5f;
 	Vector3 velocity(0, 0, 0);
 
 	player_->GetWorldPosition();
@@ -89,19 +94,20 @@ void Enemy::Fire() {
 	DifferenceVector = Subtract(player_->GetWorldPosition(), GetWorldPosition());
 	velocity = Multiply(kBulletSpeed, Normalize(DifferenceVector));
 
-	// 玉を生成し、初期化
+	//玉を生成し、初期化
 	EnemyBullet* newBullet = new EnemyBullet();
 	newBullet->Initialize(model_, worldTransform_.translation_, velocity);
 	// 玉を登録する
-	bullets_.push_back(newBullet);
+	//bullets_.push_back(newBullet);
+	gameScene_->AddEnemyBullet(newBullet);
 }
 
-void Enemy::OnCollision() {}
+void Enemy::OnCollision() { isDead_ = true; }
 
 Enemy::~Enemy() {
-	for (EnemyBullet* bullet : bullets_) {
-		delete bullet;
-	}
+	//for (EnemyBullet* bullet : bullets_) {
+	//	delete bullet;
+	//}
 }
 
 Vector3 Enemy::GetWorldPosition() {
