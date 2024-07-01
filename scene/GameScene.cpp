@@ -29,6 +29,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	railCamera_ = new RailCamera();
 	railCamera_->Initialize(worldTransform_);
+	TextureManager::Load("./resources/Reticle.png");
 	player_ = new Player();
 	Vector3 playerPosition(0, 0, 20);
 	player_->Initialize(model_, textureHandle_, playerPosition);
@@ -154,7 +155,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
-
+	player_->DrawUI();
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

@@ -7,6 +7,11 @@
 #include"PlayerBullet.h"
 #include<list>
 #include"Calculation.h"
+#include"Sprite.h"
+#include"WinApp.h"
+#include"ViewProjection.h"
+
+class GameScene;
 
 class Player {
 public:
@@ -33,9 +38,13 @@ public:
 
 	void SetParent(const WorldTransform* parent);
 
+	void DrawUI();
+
 	~Player();
 
 	Vector3 GetWorldPosition();
+
+	Vector3 GetReticleWorldPosition();
 
 	const std::list<PlayerBullet*>& GetBullet() const { return bullets_; }
 
@@ -46,4 +55,8 @@ private:
 	//ViewProjection* viewProjection_ = nullptr;
 	Input* input_ = nullptr;
 	std::list<PlayerBullet*> bullets_;
+	WorldTransform worldTransform3DReticle_;
+	Sprite* sprite2DReticle_ = nullptr;
+	GameScene* gameScene_ = nullptr;
+	ViewProjection viewProjection_;
 };
