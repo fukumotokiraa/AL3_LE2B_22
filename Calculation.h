@@ -11,6 +11,8 @@ Vector3 Multiply(float scalar, const Vector3& v);
 
 float Length(const Vector3& v);
 
+Vector3 Scale(Vector3 v, float scalar);
+
 Vector3 Normalize(const Vector3& v);
 
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m);

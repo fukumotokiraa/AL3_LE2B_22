@@ -10,6 +10,8 @@ Vector3 Multiply(float scalar, const Vector3& v) { return {scalar * v.x, scalar 
 
 float Length(const Vector3& v) { return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z); };
 
+Vector3 Scale(Vector3 v, float scalar) { return Vector3(v.x * scalar, v.y * scalar, v.z * scalar); }
+
 Vector3 Normalize(const Vector3& v) { return {v.x / Length(v), v.y / Length(v), v.z / Length(v)}; };
 
 Vector3 TransformNormal(const Vector3& v, const Matrix4x4& m) { 
