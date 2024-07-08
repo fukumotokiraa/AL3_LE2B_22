@@ -18,8 +18,9 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Vector3 playerPosi
 }
 
 void Player::Update() {
-	//// 行列を定数バッファに転送
-	//worldTransform_.TransferMatrix();
+	XINPUT_STATE joyState;
+
+
 
 	//デスフラグの立った玉を削除
 	bullets_.remove_if([](PlayerBullet* bullet) {
@@ -35,18 +36,23 @@ void Player::Update() {
 	//キャラクターの移動速さ
 	const float kCharacterSpeed = 0.2f;
 	//押した方向で移動ベクトルを変更(左右)
-	if (input_->PushKey(DIK_LEFT)) {
-		move.x -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_RIGHT)) {
-		move.x += kCharacterSpeed;
-	}
-	//押した方向で移動ベクトルを変更(上下)
-	if (input_->PushKey(DIK_DOWN)) {
-		move.y -= kCharacterSpeed;
-	} else if (input_->PushKey(DIK_UP)) {
-		move.y += kCharacterSpeed;
-	}
+	//if (input_->PushKey(DIK_LEFT)) {
+	//	move.x -= kCharacterSpeed;
+	//} else if (input_->PushKey(DIK_RIGHT)) {
+	//	move.x += kCharacterSpeed;
+	//}
+	////押した方向で移動ベクトルを変更(上下)
+	//if (input_->PushKey(DIK_DOWN)) {
+	//	move.y -= kCharacterSpeed;
+	//} else if (input_->PushKey(DIK_UP)) {
+	//	move.y += kCharacterSpeed;
+	//}
 
+
+	if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+		move.x += (float)joyState.Gamepad.sThumbLX / SHRT_MAX * kCharacterSpeed;
+		move.y += (float)joyState.Gamepad.sThumbLY / SHRT_MAX * kCharacterSpeed;
+	}
 	worldTransform_.translation_ = Add(worldTransform_.translation_, move);
 
 	ImGui::Begin(" ");
@@ -77,13 +83,40 @@ void Player::Update() {
 		//自機から3Dレティクルへの距離
 		const float kDistancePlayerTo3DReticle = 50.0f;
 		//自機から3Dレティクルへのオフセット(Z+向き)
-		Vector3 offset = {0, 0, 1.0f};
+		Vector3 offset = {0, 0, kDistancePlayerTo3DReticle};
 		//自機の回転行列の反映
-		offset = TransformNormal(offset, worldTransform_.matWorld_);
-		//ベクトルの長さを整える
-		offset = Multiply(kDistancePlayerTo3DReticle, Normalize(offset));
-		//3Dレティクルの座標を設定
-		worldTransform3DReticle_.translation_ = Add(GetWorldPosition(), offset);
+		//offset = TransformNormal(offset, worldTransform_.matWorld_);
+		//XINPUT_STATE joyState;
+		{
+			Vector2 spritePosition = sprite2DReticle_->GetPosition();
+			//XINPUT_STATE joyState;
+			// ジョイスティック状態取得
+			if (Input::GetInstance()->GetJoystickState(0, joyState)) {
+				spritePosition.x += (float)joyState.Gamepad.sThumbRX / SHRT_MAX * 10.0f;
+				spritePosition.y -= (float)joyState.Gamepad.sThumbRY / SHRT_MAX * 10.0f;
+				sprite2DReticle_->SetPosition(spritePosition);
+			}
+
+			Matrix4x4 matViewport = MakeViewportMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+			Matrix4x4 matVPV = Multiply4x4(viewProjection_.matView, Multiply4x4(viewProjection_.matProjection, matViewport));
+			Matrix4x4 matInverseVPV = Inverse(matVPV);
+
+			Vector3 posNear = Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 0);
+			Vector3 posFar = Vector3(sprite2DReticle_->GetPosition().x, sprite2DReticle_->GetPosition().y, 1);
+			posNear = Transform(posNear, matInverseVPV);
+			posFar = Transform(posFar, matInverseVPV);
+
+			// Vector3 mouseDirection = posFar - posNear;
+			// mouseDirection =
+
+			// マウスカーソルのスクリーン座標からワールド座標を取得
+			const float kDistanceTestObject = 150.0f;
+			worldTransform3DReticle_.translation_ = Add(posNear, Multiply(kDistanceTestObject, Normalize(Subtract(posFar, posNear))));
+		}
+		////ベクトルの長さを整える
+		//offset = Multiply(kDistancePlayerTo3DReticle, Normalize(offset));
+		////3Dレティクルの座標を設定
+		//worldTransform3DReticle_.translation_ = Add(GetWorldPosition(), offset);
 		//worldTransform3DReticle_.UpdateWorld();
 		worldTransform3DReticle_.UpdateMatrix();
 	}
@@ -124,19 +157,42 @@ void Player::Rotate() {
 }
 
 void Player::Attack() {
-	if (input_->TriggerKey(DIK_SPACE)) {
-		//玉の速度
+	//if (input_->TriggerKey(DIK_SPACE)) {
+	//	//玉の速度
+	//	const float kBulletSpeed = 1.0f;
+	//	Vector3 velocity(0, 0, kBulletSpeed);
+	//	//速度ベクトルを自機の向きに合わせて回転させる
+	//	velocity = TransformNormal(velocity, worldTransform_.matWorld_);
+	//	//自機から照準オブジェクトへのベクトル
+	//	velocity = Subtract(GetReticleWorldPosition(), GetWorldPosition());
+	//	velocity = Multiply(1.0f, Normalize(velocity));
+	//	//玉を生成し、初期化
+	//	PlayerBullet* newBullet = new PlayerBullet();
+	//	newBullet->Initialize(model_, GetWorldPosition(), velocity);
+	//	//玉を登録する
+	//	bullets_.push_back(newBullet);
+	//}
+	XINPUT_STATE joyState;
+
+	// ゲームパッド未接続なら何もせずに抜ける
+	if (!Input::GetInstance()->GetJoystickState(0, joyState)) {
+		return;
+	}
+
+	if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+		// 弾の速度
 		const float kBulletSpeed = 1.0f;
-		Vector3 velocity(0, 0, kBulletSpeed);
-		//速度ベクトルを自機の向きに合わせて回転させる
+		Vector3 velocity(0.0f, 0.0f, kBulletSpeed);
 		velocity = TransformNormal(velocity, worldTransform_.matWorld_);
-		//自機から照準オブジェクトへのベクトル
+		// 自機から昇順オブジェクトへのベクトル
 		velocity = Subtract(GetReticleWorldPosition(), GetWorldPosition());
-		velocity = Multiply(1.0f, Normalize(velocity));
-		//玉を生成し、初期化
+		velocity = Multiply(kBulletSpeed, Normalize(velocity));
+
+		// 弾を生成し、初期化
 		PlayerBullet* newBullet = new PlayerBullet();
 		newBullet->Initialize(model_, GetWorldPosition(), velocity);
-		//玉を登録する
+
+		// 弾を登録する
 		bullets_.push_back(newBullet);
 	}
 }

@@ -31,7 +31,7 @@ public:
 private:
 	WorldTransform worldTransform_;
 	ViewProjection viewProjection_;
-	float CameraSpeed_ = 0.1f;//レールカメラのスピード
+	float CameraSpeed_ = 0.01f;//レールカメラのスピード
 	Vector3 velocity_;
 
 };

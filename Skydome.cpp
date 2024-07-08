@@ -12,7 +12,7 @@ void Skydome::Initialize(Model* model,ViewProjection* viewProjection) {
 }
 
 void Skydome::Update() {
-	worldTransform_.scale_ = {100, 100, 100};
+	worldTransform_.scale_ = {500, 500, 500};
 	worldTransform_.UpdateMatrix();
 }
 
