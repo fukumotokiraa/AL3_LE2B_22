@@ -50,8 +50,6 @@ private: // メンバ変数
 	Model* model_ = nullptr;
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
-	Model* modelBlock_ = nullptr;
-	std::vector<std::vector<WorldTransform*>> worldTransformBlocks_;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
