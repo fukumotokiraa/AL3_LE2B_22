@@ -4,6 +4,9 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include "TextureManager.h"
+#include"Calculation.h"
+#include<imgui.h>
+#include <Input.h>
 
 class Player {
 public:
