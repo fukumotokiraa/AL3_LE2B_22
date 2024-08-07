@@ -10,6 +10,7 @@
 #include "WorldTransform.h"
 #include"Skydome.h"
 #include "Ground.h"
+#include"FollowCamera.h"
 #include<vector>
 #include<DebugCamera.h>
 #include<AxisIndicator.h>
@@ -58,6 +59,8 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelSkydome_ = nullptr;
 	std::unique_ptr<Ground> ground_ = nullptr;
 	std::unique_ptr<Model> modelGround_ = nullptr;
+	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
+
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;

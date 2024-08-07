@@ -17,6 +17,9 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	viewProjection_.Initialize();
+
+	followCamera_ = std::make_unique<FollowCamera>();
+	
 	player_ = std::make_unique<Player>();
 	model_.reset(Model::CreateFromOBJ("Player",true));
 	player_->Initialize(model_.get(), &viewProjection_);
@@ -26,6 +29,12 @@ void GameScene::Initialize() {
 	ground_ = std::make_unique<Ground>();
 	modelGround_.reset(Model::CreateFromOBJ("Ground", true));
 	ground_->Initialize(modelGround_.get(), &viewProjection_);
+	followCamera_ = std::make_unique<FollowCamera>();
+	followCamera_->Initialize();
+
+
+	followCamera_->SetTarget(&player_->GetWorldTransform());
+	player_->SetViewProjection(&followCamera_->GetViewProjection());
 
 	//デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
@@ -40,10 +49,15 @@ void GameScene::Update() {
 	skydome_->Update();
 	ground_->Update();
 
+
+
+
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
 		    isDebugCameraActive_ = !isDebugCameraActive_;
 	}
+
 #endif // _DEBUG
 	//カメラの処理
 	if (isDebugCameraActive_) {
@@ -56,7 +70,13 @@ void GameScene::Update() {
 	//ビュープロジェクション行列の更新と転送
 		viewProjection_.UpdateMatrix();
 	}
+	if (!isDebugCameraActive_) {
+		followCamera_->Update();
+		viewProjection_.matView = followCamera_->GetViewProjection().matView;
+		viewProjection_.matProjection = followCamera_->GetViewProjection().matProjection;
 		
+		viewProjection_.TransferMatrix();
+	}	
 	
 }
 

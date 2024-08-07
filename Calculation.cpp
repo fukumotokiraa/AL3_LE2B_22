@@ -61,9 +61,9 @@ Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2) {
 	return Subtract(m1, m2);
 }
 
-Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
-	return Multiply(m1, m2);
-}
+//Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2) {
+//	return Multiply(m1, m2);
+//}
 
 Vector3 operator-(const Vector3& v) {
 	return { -v.x,-v.y,-v.z };
@@ -278,8 +278,15 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& radian, const Ve
 		1 };
 }
 
-Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip)
-{
+Matrix4x4 MakeRotateMatrix(Vector3 radian) {
+	Matrix4x4 rotateXMatrix = {1, 0, 0, 0, 0, cosf(radian.x), sinf(radian.x), 0, 0, -sinf(radian.x), cosf(radian.x), 0, 0, 0, 0, 1};
+	Matrix4x4 rotateYMatrix = {cosf(radian.y), 0, -sinf(radian.y), 0, 0, 1, 0, 0, sinf(radian.y), 0, cosf(radian.y), 0, 0, 0, 0, 1};
+	Matrix4x4 rotateZMatrix = {cosf(radian.z), sinf(radian.z), 0, 0, -sinf(radian.z), cosf(radian.z), 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+	return Multiply4x4(rotateXMatrix, Multiply4x4(rotateYMatrix, rotateZMatrix));
+
+}
+
+Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip) {
 	return { 1 / aspectRatio * (1 / std::tan(fovY / 2)), 0, 0, 0, 0, (1 / std::tan(fovY / 2)), 0, 0, 0, 0, farClip / (farClip / nearClip), 1, 0, 0, -nearClip * farClip / (farClip - nearClip), 0 };
 }
 
