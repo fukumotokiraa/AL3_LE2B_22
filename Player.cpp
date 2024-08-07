@@ -1,10 +1,10 @@
 #include "Player.h"
 #include<cassert>
 
-void Player::Initialize(Model* model, uint32_t textureHandle, ViewProjection* viewProjection) { 
+void Player::Initialize(Model* model, uint32_t textureHandle) { 
 	assert(model);
 	worldTransform_.Initialize();
-	viewProjection_ = viewProjection;
+
 	textureHandle_ = textureHandle;
 	model_ = model;
 }
@@ -14,6 +14,6 @@ void Player::Update() {
 	worldTransform_.TransferMatrix(); 
 }
 
-void Player::Draw() { 
-	model_->Draw(worldTransform_, *viewProjection_, textureHandle_);
+void Player::Draw(ViewProjection& viewProjection) { 
+	model_->Draw(worldTransform_, viewProjection, textureHandle_);
 }

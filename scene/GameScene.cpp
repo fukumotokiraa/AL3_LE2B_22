@@ -5,9 +5,9 @@
 GameScene::GameScene() {}
 
 GameScene::~GameScene() {
-	delete player_;
-	delete model_;
-	delete debugCamera_;
+	//delete player_;
+	//delete model_;
+	//delete debugCamera_;
 }
 
 void GameScene::Initialize() {
@@ -16,13 +16,13 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
-	model_ = Model::Create();
 	viewProjection_.Initialize();
-	player_ = new Player();
-	player_->Initialize(model_, textureHandle_, &viewProjection_);
+	model_.reset(Model::Create());
+	player_ = std::make_unique<Player>();
+	player_->Initialize(model_.get(), textureHandle_);
 
 	//デバッグカメラの生成
-	debugCamera_ = new DebugCamera(1280, 720);
+	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
 
 }
 
@@ -74,7 +74,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	player_->Draw();
+	player_->Draw(viewProjection_);
 
 
 	// 3Dオブジェクト描画後処理

@@ -10,6 +10,7 @@
 #include "WorldTransform.h"
 #include<vector>
 #include<DebugCamera.h>
+#include<memory>
 
 /// <summary>
 /// ゲームシーン
@@ -47,14 +48,14 @@ private: // メンバ変数
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	uint32_t textureHandle_ = 0; 
-	Model* model_ = nullptr;
+	std::unique_ptr<Model> model_ = nullptr;
 	ViewProjection viewProjection_;
-	Player* player_ = nullptr;
+	std::unique_ptr<Player> player_ = nullptr;
 
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	//デバッグカメラ
-	DebugCamera* debugCamera_ = nullptr;
+	std::unique_ptr<DebugCamera> debugCamera_ = nullptr;
 
 
 
