@@ -17,17 +17,29 @@ void GameScene::Initialize() {
 
 	textureHandle_ = TextureManager::Load("uvChecker.png");
 	viewProjection_.Initialize();
-	model_.reset(Model::Create());
 	player_ = std::make_unique<Player>();
-	player_->Initialize(model_.get(), textureHandle_);
+	model_.reset(Model::CreateFromOBJ("Player",true));
+	player_->Initialize(model_.get(), &viewProjection_);
+	skydome_ = std::make_unique<Skydome>();
+	modelSkydome_.reset(Model::CreateFromOBJ("Skydome", true));
+	skydome_->Initialize(modelSkydome_.get(), &viewProjection_);
+	ground_ = std::make_unique<Ground>();
+	modelGround_.reset(Model::CreateFromOBJ("Ground", true));
+	ground_->Initialize(modelGround_.get(), &viewProjection_);
 
 	//デバッグカメラの生成
 	debugCamera_ = std::make_unique<DebugCamera>(1280, 720);
+
+	AxisIndicator::GetInstance()->SetVisible(true);
+	AxisIndicator::GetInstance()->SetTargetViewProjection(&debugCamera_->GetViewProjection());
 
 }
 
 void GameScene::Update() { 
 	player_->Update();
+	skydome_->Update();
+	ground_->Update();
+
 #ifdef _DEBUG
 	if (input_->TriggerKey(DIK_SPACE)) {
 		    isDebugCameraActive_ = !isDebugCameraActive_;
@@ -74,8 +86,9 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	player_->Draw(viewProjection_);
-
+	player_->Draw();
+	skydome_->Draw();
+	ground_->Draw();
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();

@@ -1,13 +1,15 @@
 #include "Model.h"
-#include "WorldTransform.h"
 #include "ViewProjection.h"
+#include "WorldTransform.h"
 #include "TextureManager.h"
 
 #pragma once
-class Skydome {
+class Ground {
 public:
-	void Initialize(Model* model,ViewProjection* viewProjection);
+	void Initialize(Model* model, ViewProjection* viewProjection);
+
 	void Update();
+
 	void Draw();
 
 private:
