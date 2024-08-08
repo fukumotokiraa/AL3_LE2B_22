@@ -62,6 +62,12 @@ private: // メンバ変数
 	std::unique_ptr<FollowCamera> followCamera_ = nullptr;
 
 
+	std::unique_ptr<Model> modelFighterBody_;
+	std::unique_ptr<Model> modelFighterHead_;
+	std::unique_ptr<Model> modelFighterL_arm_;
+	std::unique_ptr<Model> modelFighterR_arm_;
+
+
 	//デバッグカメラ有効
 	bool isDebugCameraActive_ = false;
 	//デバッグカメラ
