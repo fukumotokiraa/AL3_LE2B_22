@@ -9,13 +9,14 @@
 #include "math.h"
 #include<imgui.h>
 #include <Input.h>
+#include "BaseCharacter.h"
 
-class Player {
+class Player : public BaseCharacter {
 public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* modelBody,Model* modelHead,Model* modelL_arm,Model* modelR_arm, ViewProjection* viewProjection);
+	void Initialize(const std::vector<Model*>& models, ViewProjection* viewProjection) override;
 
 	/// <summary>
 	/// 毎フレーム処理

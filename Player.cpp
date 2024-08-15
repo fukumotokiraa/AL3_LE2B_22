@@ -1,26 +1,34 @@
 #include "Player.h"
 #include<cassert>
 
-void Player::Initialize(Model* modelBody, Model* modelHead, Model* modelL_arm, Model* modelR_arm, ViewProjection* viewProjection) { 
+void Player::Initialize(const std::vector<Model*>& models, ViewProjection* viewProjection) {
+	BaseCharacter::Initialize(models, viewProjection);
+
+	assert(models.size() == 4); // 4つのモデルが渡されることを確認
 	worldTransform_.Initialize();
-	assert(modelBody);
+
+	// ボディ
+	assert(models[0]);
 	worldTransformBody_.Initialize();
-	modelBody_ = modelBody;
+	modelBody_ = models[0];
 	textureBody_ = TextureManager::Load("./Resources/float_Body/tex.png");
 
-	assert(modelHead);
+	// ヘッド
+	assert(models[1]);
 	worldTransformHead_.Initialize();
-	modelHead_ = modelHead;
+	modelHead_ = models[1];
 	textureHead_ = TextureManager::Load("./Resources/float_Head/tex.png");
 
-	assert(modelL_arm);
+	// 左腕
+	assert(models[2]);
 	worldTransformL_arm_.Initialize();
-	modelL_arm_ = modelL_arm;
+	modelL_arm_ = models[2];
 	textureL_arm_ = TextureManager::Load("./Resources/float_L_arm/tex.png");
 
-	assert(modelR_arm);
+	// 右腕
+	assert(models[3]);
 	worldTransformR_arm_.Initialize();
-	modelR_arm_ = modelR_arm;
+	modelR_arm_ = models[3];
 	textureR_arm_ = TextureManager::Load("./Resources/float_R_arm/tex.png");
 
 	worldTransformHead_.translation_ = {0.0f, 1.5f, 0.0f};
@@ -34,16 +42,14 @@ void Player::Initialize(Model* modelBody, Model* modelHead, Model* modelL_arm, M
 
 	InitializeFloatingGimmick();
 
-	//worldTransform_.Initialize();
-	//model_ = model;
-	//textureHandle_ = TextureManager::Load("./Resources/Player/tex.png");
 	viewProjection_ = viewProjection;
-
 }
 
-void Player::Update() { 
 
+void Player::Update() { 
 	XINPUT_STATE joyState;
+
+	BaseCharacter::Update();
 
 	UpdateFloatingGimmick();
 
@@ -101,11 +107,13 @@ void Player::Update() {
 }
 
 void Player::Draw() { 
-	//model_->Draw(worldTransform_, *viewProjection_);
-	modelBody_->Draw(worldTransformBody_, *viewProjection_);
-	modelHead_->Draw(worldTransformHead_, *viewProjection_);
-	modelL_arm_->Draw(worldTransformL_arm_, *viewProjection_);
-	modelR_arm_->Draw(worldTransformR_arm_, *viewProjection_);
+	BaseCharacter::Draw();
+	models_[modelBody_]
+
+	//modelBody_->Draw(worldTransformBody_, *viewProjection_);
+	//modelHead_->Draw(worldTransformHead_, *viewProjection_);
+	//modelL_arm_->Draw(worldTransformL_arm_, *viewProjection_);
+	//modelR_arm_->Draw(worldTransformR_arm_, *viewProjection_);
 }
 
 void Player::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
