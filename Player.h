@@ -16,7 +16,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(const std::vector<Model*>& models, ViewProjection* viewProjection) override;
+	void Initialize(const std::vector<Model*>& models) override;
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -26,7 +26,7 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw();
+	void Draw(ViewProjection* viewProjection);
 
 	const WorldTransform& GetWorldTransform() { return worldTransform_; }
 
@@ -41,6 +41,10 @@ private:
 	const ViewProjection* viewProjection_ = nullptr;
 	float floatingParameter_ = 0.0f;
 
+	int kModelIndexBody = 0;
+	int kModelIndexHead = 1;
+	int kModelIndexL_arm = 2;
+	int kModelIndexR_arm = 3;
 
 	Model* modelBody_ = nullptr;
 	Model* modelHead_ = nullptr;

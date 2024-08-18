@@ -1,6 +1,7 @@
 #pragma once
 
 #include"Player.h"
+#include"Enemy.h"
 #include "Audio.h"
 #include "DirectXCommon.h"
 #include "Input.h"
@@ -55,6 +56,8 @@ private: // メンバ変数
 	std::unique_ptr<Model> model_ = nullptr;
 	ViewProjection viewProjection_;
 	std::unique_ptr<Player> player_ = nullptr;
+	std::unique_ptr<Enemy> enemy_ = nullptr;
+
 	std::unique_ptr<Skydome> skydome_ = nullptr;
 	std::unique_ptr<Model> modelSkydome_ = nullptr;
 	std::unique_ptr<Ground> ground_ = nullptr;
@@ -66,6 +69,9 @@ private: // メンバ変数
 	std::unique_ptr<Model> modelFighterHead_;
 	std::unique_ptr<Model> modelFighterL_arm_;
 	std::unique_ptr<Model> modelFighterR_arm_;
+
+	std::unique_ptr<Model> modelEnemyBody_;
+	
 
 
 	//デバッグカメラ有効

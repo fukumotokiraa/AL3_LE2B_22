@@ -26,7 +26,12 @@ void GameScene::Initialize() {
 	modelFighterL_arm_.reset(Model::CreateFromOBJ("float_L_arm", true));
 	modelFighterR_arm_.reset(Model::CreateFromOBJ("float_R_arm", true));
 	std::vector<Model*> playerModels = {modelFighterBody_.get(), modelFighterHead_.get(), modelFighterL_arm_.get(), modelFighterR_arm_.get()};
-	player_->Initialize(playerModels, &viewProjection_);
+	player_->Initialize(playerModels);
+
+	enemy_ = std::make_unique<Enemy>();
+	modelEnemyBody_.reset(Model::CreateFromOBJ("needle_Body", true));
+	std::vector<Model*> enemyModels = {modelEnemyBody_.get()};
+	enemy_->Initialize(enemyModels);
 
 	skydome_ = std::make_unique<Skydome>();
 	modelSkydome_.reset(Model::CreateFromOBJ("Skydome", true));
@@ -53,6 +58,7 @@ void GameScene::Initialize() {
 
 void GameScene::Update() { 
 	player_->Update();
+	enemy_->Update();
 	skydome_->Update();
 	ground_->Update();
 
@@ -113,7 +119,8 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	player_->Draw();
+	player_->Draw(&viewProjection_);
+	enemy_->Draw(&viewProjection_);
 	skydome_->Draw();
 	ground_->Draw();
 

@@ -1,8 +1,8 @@
 #include "Player.h"
 #include<cassert>
 
-void Player::Initialize(const std::vector<Model*>& models, ViewProjection* viewProjection) {
-	BaseCharacter::Initialize(models, viewProjection);
+void Player::Initialize(const std::vector<Model*>& models) {
+	BaseCharacter::Initialize(models);
 
 	assert(models.size() == 4); // 4つのモデルが渡されることを確認
 	worldTransform_.Initialize();
@@ -41,8 +41,6 @@ void Player::Initialize(const std::vector<Model*>& models, ViewProjection* viewP
 	worldTransformR_arm_.parent_ = &worldTransformBody_;
 
 	InitializeFloatingGimmick();
-
-	viewProjection_ = viewProjection;
 }
 
 
@@ -106,14 +104,12 @@ void Player::Update() {
 	//worldTransformR_arm_.TransferMatrix();
 }
 
-void Player::Draw() { 
-	BaseCharacter::Draw();
-	models_[modelBody_]
+void Player::Draw(ViewProjection* viewProjection) { 
+	models_[kModelIndexBody]->Draw(worldTransformBody_, *viewProjection);
+	models_[kModelIndexHead]->Draw(worldTransformHead_, *viewProjection);
+	models_[kModelIndexL_arm]->Draw(worldTransformL_arm_, *viewProjection);
+	models_[kModelIndexR_arm]->Draw(worldTransformR_arm_, *viewProjection);
 
-	//modelBody_->Draw(worldTransformBody_, *viewProjection_);
-	//modelHead_->Draw(worldTransformHead_, *viewProjection_);
-	//modelL_arm_->Draw(worldTransformL_arm_, *viewProjection_);
-	//modelR_arm_->Draw(worldTransformR_arm_, *viewProjection_);
 }
 
 void Player::InitializeFloatingGimmick() { floatingParameter_ = 0.0f; }
