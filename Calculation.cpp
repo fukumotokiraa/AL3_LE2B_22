@@ -73,6 +73,8 @@ Vector3 operator+(const Vector3& v) {
 	return v;
 }
 
+float Radian(float degree) { return degree * (float)M_PI / 180.0f; };
+
 float Length(const Vector3& v) { return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z); };
 
 Vector3 Normalize(const Vector3& v) { return {v.x / Length(v), v.y / Length(v), v.z / Length(v)}; };

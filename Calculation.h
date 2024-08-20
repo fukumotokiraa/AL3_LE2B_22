@@ -4,6 +4,8 @@
 #include <cassert>
 #include <cmath>
 #include<imgui.h>
+#define _USE_MATH_DEFINES
+#include "math.h"
 #include"Vector3.h"
 #include"Vector4.h"
 #include"Matrix4x4.h"
@@ -35,6 +37,8 @@ Matrix4x4 operator+(const Matrix4x4& m1, const Matrix4x4& m2);
 Matrix4x4 operator-(const Matrix4x4& m1, const Matrix4x4& m2);
 
 //Matrix4x4 operator*(const Matrix4x4& m1, const Matrix4x4& m2);
+
+float Radian(float degree);
 
 float Length(const Vector3& v);
 
