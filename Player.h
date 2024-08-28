@@ -5,6 +5,7 @@
 #include "ViewProjection.h"
 #include "TextureManager.h"
 #include "Calculation.h"
+#include "GlobalVariables.h"
 #define _USE_MATH_DEFINES
 #include "math.h"
 #include<imgui.h>
